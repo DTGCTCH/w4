@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>
+		에에에에엥
+	</title>
+	<style type="text/css">
+		*{cursor: url(cursor.png) 1 1, auto;}
+		body{margin: 0;}
+		.box1{position: absolute; background: url(live.png); width: 93px; height: 93px;}
+		.box2{position: absolute; background: url(dead.png); width: 93px; height: 93px;}
+		.textbox{margin: auto; width: 20vw; text-align: center;}
+		input{border-style: none; width: 3vw;}
+	</style>
+
+</head>
+<body>
+	<div class="textbox">
+		<label for="Timer">남은 시간:</label>
+		<input id="Timer" type="text" value="" readonly/>
+	</div>
+	<div class="textbox">
+		<label for="Score">점수:</label>
+		<input id="Score" type="text" value="" readonly/>
+	</div>
+	<audio id="audio" src="whip.wav"></audio>
+
+	<script type="text/javascript">
+	const Timer=document.getElementById('Timer'); //스코어 기록창-분
+	let time= 15000;
+	let min=0;
+	let sec=15;
+	Timer.value=min+":"+'00'; 
+
+	function TIMER(){
+	    PlAYTIME=setInterval(function(){
+	        time=time-1000; //1초씩 줄어듦
+	        min=time/(60*1000); //초를 분으로 나눠준다.
+	       if(sec>0){ //sec=60 에서 1씩 빼서 출력해준다.
+	            sec=sec-1;
+	            Timer.value=Math.floor(min)+':'+sec; //실수로 계산되기 때문에 소숫점 아래를 버리고 출력해준다.   
+	        }
+	        if(sec===0){
+	         	// 0에서 -1을 하면 -59가 출력된다.
+	            // 그래서 0이 되면 바로 sec을 60으로 돌려주고 value에는 0을 출력하도록 해준다.
+	            sec=60;
+	            Timer.value=Math.floor(min)+':'+'00'
+	        }     
+	    },1000); //1초마다 
+	}
+
+
+	TIMER();
+	setTimeout(function(){
+	clearInterval(PlAYTIME);
+	document.body.innerHTML = "시간 종료! " + s + "점 달성"
+	},15000);
+
+	makeBox();
+	var s = 0;
+	const Score=document.getElementById('Score');
+
+	document.body.onclick = function play(){
+		var audio = document.getElementById("audio")
+		audio.play()
+		}
+
+	function makeBox(){
+		var a = document.createElement("div");
+		a.id = "sqaure";
+		a.className = "box1";
+		var b = Math.random()*window.innerWidth;
+		var c = Math.random()*window.innerHeight;
+		var state = 0;
+		console.log(state);
+		a.style.left = b + "px";
+		a.style.top = c + "px";
+		a.onclick = function(){
+			if(state == 0){
+				a.className = "box2";
+				s = s + 1;
+				Score.value = s
+				state = 1;
+				makeBox();
+			}
+			else if(state == 1){
+				s = s - 1;
+				Score.value = s
+			}
+
+		}
+		document.body.appendChild(a);
+	}
+	</script>
+
+</body>
+</html>
